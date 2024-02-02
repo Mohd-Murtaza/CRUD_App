@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import "./App.css";
-import AllRoutes from "../Routes/allRoutes";
+import AllRoutes from "../routes/AllRoutes";
 import { useContext } from "react";
 import { Context } from "../context/AuthContext";
 
