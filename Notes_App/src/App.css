@@ -1,0 +1,32 @@
+body{
+  margin: 0%;
+  padding: 0%;
+}
+#MainHeading{
+  background-color: black;
+  text-decoration: red underline;
+  color: aquamarine;
+  text-align: center;
+  padding: 20px 0px;
+}
+#Mian{
+  background-color: black;
+  margin: auto;
+  width: 50%;
+  height: 50px;
+  display: flex;
+  justify-content: space-around;
+}
+#loginFrom{
+  width: 30%;
+  height: auto;
+  margin: auto;
+  padding: 30px 10px;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  display: flex;
+  flex-direction: column;
+}
+#loginFrom>label,input{
+  margin: 10px;
+}
+
