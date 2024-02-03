@@ -37,20 +37,24 @@ userRouter.post("/signup", async(req,res)=>{
 userRouter.post("/login",async(req,res)=>{
     try {
         const {email,password}=req.body;
+        const cookieOptions={httpOnly:true,secure:true,sameSite:"none"}
         const checkUserIsExist=await UserModel.findOne({email});
         console.log(checkUserIsExist)
         if(!checkUserIsExist){
             res.status(404).send({msg:"user not found please signup first"})
         }else{
-            bcrypt.compare(password, checkUserIsExist.password, async(err,decode)=>{
-                if(decode){
+            bcrypt.compare(password, checkUserIsExist.password, (err,decode)=>{
+                if(err){
+                    console.error("Error during password comparison:", err);
+                    res.status(500).send({ msg: "Internal server error" });
+                }else if(!decode){
+                    res.status(401).send({ msg: "Invalid password" });
+                }else{
                     const accessToken=jwt.sign({userId:checkUserIsExist._id,userName:checkUserIsExist.userName}, ACCESS_KEY,{expiresIn:"5m"});
                     const refreshToken=jwt.sign({userId:checkUserIsExist._id,userName:checkUserIsExist.userName}, REFRESH_KEY, {expiresIn:"1h"});
-                    res.cookie("accessToken",accessToken);
-                    res.cookie("refreshToken",refreshToken);
+                    res.cookie("accessToken",accessToken,cookieOptions);
+                    res.cookie("refreshToken",refreshToken,cookieOptions);
                     res.status(200).send({msg:"user login successfully.", accessToken, refreshToken});
-                }else{
-                    res.status(400).send({msg:"error while decoding the password", err:err.message})
                 }
             })
         }
@@ -59,18 +63,21 @@ userRouter.post("/login",async(req,res)=>{
     }
 });
 userRouter.post("/logout", async(req,res)=>{
+    console.log("gjgjghjfhfhf",req.cookies)
+    const accessToken=req.cookies.accessToken;
+    console.log({accessToken:accessToken})
     try {
-        const {accessToken,refreshToken}=req.cookies;
         const checkTokensIsExists=await BlacklistModel.findOne({accessToken})
         if(checkTokensIsExists){
             res.status(400).send({msg:"you already logout!"})
         }else{
-            const blacklistTokens=new BlacklistModel({accessToken,refreshToken});
+            const blacklistTokens=new BlacklistModel({accessToken});
             await blacklistTokens.save();
             res.status(200).send({msg:"logout successfull",blacklistTokens})
         }
     } catch (error) {
-        res.status(400).send({msg:"error while logout!",error:error.message})
+        console.log(error)
+        res.status(400).send({msg:"error while logout!",error:error})
     }
 });
 

@@ -1,4 +1,5 @@
 require("dotenv").config();
+const cors = require("cors")
 const express=require("express");
 const cookieParser = require("cookie-parser");
 const { connection } = require("./db");
@@ -9,12 +10,15 @@ const PORT=process.env.PORT
 const app=express();
 app.use(express.json());
 app.use(cookieParser());
-
+app.use(cors({
+    origin:["http://localhost:5173","https://fullstack-notes-app-ja6v.onrender.com","https://crud-app0101.netlify.app"],
+    credentials:true
+}));
 app.get("/home",(req,res)=>{
     res.status(200).send("this is a home page");
 })
 app.use("/user", userRouter);
-app.use("/notes",auth, notesRouter)
+app.use("/notes", auth, notesRouter)
 
 app.use((req,res)=>{
     res.status(404).send("this is invalid request!")

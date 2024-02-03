@@ -17,6 +17,9 @@ body{
   display: flex;
   justify-content: space-around;
 }
+h1{
+  text-align: center;
+}
 #loginFrom{
   width: 30%;
   height: auto;
@@ -28,5 +31,46 @@ body{
 }
 #loginFrom>label,input{
   margin: 10px;
+}
+button{
+  color: aquamarine;
+  background-color: black;
+  border: none;
+  padding: 5px;
+  width: 50%;
+  margin: auto;
+  transition: all .3s ease-in;
+}
+button:hover{
+  cursor: pointer;
+  color: black;
+  background-color: aquamarine;
+}
+.links{
+  margin: auto;
+  text-decoration: none;
+  color: aquamarine;          
+  font-size: 16px; 
+}
+#allNotesHeadingAndBtnDiv{
+  background-color: rgb(88, 88, 88);
+  width: 70%;
+  margin: 30px auto auto auto;
+  padding: 0 20px;
+  display: flex;
+  justify-content: space-between;
+}
+#allNotesHeadingAndBtnDiv>h1{
+  color: white;
+}
+#allNotesHeadingAndBtnDiv>button{
+  color: red;
+  font-size: 16px;
+  font-weight: 900;
+  padding: 0;
+  width: 100px;
+  height: 40px;
+  margin: auto 0;
+  border-radius: 10px;
 }
 

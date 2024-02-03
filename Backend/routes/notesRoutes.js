@@ -19,8 +19,8 @@ notesRouter.post("/add",async(req,res)=>{
 });
 notesRouter.get("/", async(req,res)=>{
     try {
-        const loginUser=req.body.userId;
-        const allNotes=await NotesModel.find({userId:loginUser});
+        // const loginUser=req.body.userId;
+        const allNotes=await NotesModel.find();
         res.status(200).send({msg:"all notes",allNotes});
     } catch (error) {
         res.status(400).send({msg:"error while fetching notes",error:error.message})

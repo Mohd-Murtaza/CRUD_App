@@ -5,15 +5,15 @@ import { useContext } from "react";
 import { Context } from "../context/AuthContext";
 
 function App() {
-  const {isAuth}=useContext(Context)
+  const {isAuth,isLogout}=useContext(Context)
   return (
     <>
     <h1 id="MainHeading">Notes Application</h1>
       <div id="Mian">
-        <Link to="/">Home</Link>
-        <Link to="/signup">Signup</Link>
-        <Link to="/login">Login</Link>
-        {isAuth?<Link to="/admin">Admin Dashboard</Link>:null}
+        {isLogout?<Link to="/home" className="links">Home</Link>:null}
+        <Link to="/signup" className="links">Signup</Link>
+        <Link to="/login" className="links">Login</Link>
+        {isAuth?<Link to="/admin" className="links">Admin Dashboard</Link>:null}
       </div>
       <AllRoutes />
     </>

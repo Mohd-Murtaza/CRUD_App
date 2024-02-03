@@ -1,9 +1,11 @@
 import React, { useContext, useState } from "react";
 import { Context } from "../context/AuthContext";
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
-  const { isAuth, setIsAuth } = useContext(Context);
-  const [isLogout,setIsLogout]=useState(false)
+  const navigate = useNavigate();
+  const {isAuth,setIsAuth}=useContext(Context)
   const [userDetails, setUserDetails] = useState({
     email: "",
     password: "",
@@ -17,25 +19,33 @@ const Login = () => {
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsAuth(true);
-      setIsLogout(true);
     try {
       const userData = await axios.post(
-        "https://impossible-tuna-top-coat.cyclic.app/users/login", userDetails, {withCredentials:true}
+        "https://fullstack-notes-app-ja6v.onrender.com/user/login", userDetails, {withCredentials:true}
       );
       console.log(userData);
-    
       setUserDetails({
         email:"",
         password:""
       })
+      if(userData.data.msg=="user login successfully."){
+        alert(`user login successfully.`)
+        setIsAuth(!isAuth)
+        navigate('/admin');
+      }
     } catch (error) {
       console.log(error);
+      if(error.response.data.msg=="user not found please signup first"){
+        alert(`User not found please recheck you email.`)
+      }
+      if(error.response.data.msg=="Invalid password"){
+        alert(`Invalid password`)
+      }
     }
   };
   return (
     <div>
-      <h1>login here...</h1>
+      <h1>Login here</h1>
       <form id="loginFrom" onSubmit={handleSubmit}>
         <label htmlFor="email">Email</label>
         <input
@@ -55,7 +65,7 @@ const Login = () => {
           value={userDetails.password}
           placeholder="password"
         />
-        {!isLogout?<button type="submit">Login</button>:<button type="submit">Logout</button>}
+        <button type="submit">Login</button>
       </form>
     </div>
   );
